@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Button, TextInput, StyleSheet } from 'react-native';
+import { View, Button, TextInput, StyleSheet, FlatList,Text } from 'react-native';
+import films from '../Helpers/filmsData';
 
 export default function Search() {
         return(
@@ -8,6 +9,9 @@ export default function Search() {
                             style={ styles.textinput }/>
                 <Button title="Search" onPress={() => {}}
                         style={{ height: 50 }}/>
+                <FlatList data={ films }
+                          keyExtractor={(item) => item.id.toString()}
+                          renderItem={({item}) => <Text>{ item.title }</Text>}/>
             </View>
         )
 }
