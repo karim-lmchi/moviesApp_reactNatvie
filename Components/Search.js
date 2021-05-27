@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Button, TextInput, StyleSheet, FlatList,Text } from 'react-native';
 import films from '../Helpers/filmsData';
+import FilmItem from './FilmItem';
 
 export default function Search() {
         return(
@@ -11,7 +12,7 @@ export default function Search() {
                         style={{ height: 50 }}/>
                 <FlatList data={ films }
                           keyExtractor={(item) => item.id.toString()}
-                          renderItem={({item}) => <Text>{ item.title }</Text>}/>
+                          renderItem={({item}) => <FilmItem/>}/>
             </View>
         )
 }
