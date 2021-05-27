@@ -3,7 +3,7 @@ import { View, Button, TextInput, StyleSheet } from 'react-native';
 
 export default function Search() {
         return(
-            <View style={{ marginTop: 20 }}>
+            <View style={ styles.main_container }>
                 <TextInput placeholder="Film title"
                             style={ styles.textinput }/>
                 <Button title="Search" onPress={() => {}}
@@ -13,6 +13,11 @@ export default function Search() {
 }
 
 const styles = StyleSheet.create({
+    main_container: { 
+        marginTop: 20, 
+        flex: 1,
+    },
+
     textinput: {
         marginLeft: 5, 
         height: 50,
