@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button, TextInput } from 'react-native';
+import { View, Button, TextInput, StyleSheet } from 'react-native';
 
 export default function Search() {
         return(
@@ -12,7 +12,7 @@ export default function Search() {
         )
 }
 
-const styles = {
+const styles = StyleSheet.create({
     textinput: {
         marginLeft: 5, 
         height: 50,
@@ -20,4 +20,4 @@ const styles = {
         borderWidth: 1,
         paddingLeft: 5,
     }
-}
+})
