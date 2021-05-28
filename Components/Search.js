@@ -8,25 +8,37 @@ class Search extends React.Component {
 
     constructor(props) {
         super(props)
+        this.state = { 
+            films: [],
+        }
+        this.searchedText = ''
     }
 
     _loadFilms() {
-        getFilmsFromApiWithSearchedText('star').then(data => console.log(data));
-    };
-
-        render() {
-            return(
-            <View style={ styles.main_container }>
-                <TextInput placeholder="Film title"
-                            style={ styles.textinput }/>
-                <Button title="Search" onPress={() => {}}
-                        style={{ height: 50 }}/>
-                <FlatList data={ films }
-                          keyExtractor={(item) => item.id.toString()}
-                          renderItem={({item}) => <FilmItem film={item}/>}/>
-            </View>
-            )
+        if(this.searchedText.length > 0) {
+            getFilmsFromApiWithSearchedText(this.searchedText).then(data => this.setState({ films: data.results }));
         }
+    }
+
+    _searchTextInputChanged(text) {
+        this.searchedText = text;
+    }
+
+    render() {
+        return(
+        <View style={ styles.main_container }>
+            <TextInput placeholder="Film title"
+                       style={ styles.textinput }
+                       onChangeText={(text) => this._searchTextInputChanged(text)}/>
+            <Button title="Search" 
+                    onPress={() => this._loadFilms()}
+                    style={{ height: 50 }}/>
+            <FlatList data={ this.state.films }
+                      keyExtractor={(item) => item.id.toString()}
+                      renderItem={({item}) => <FilmItem film={item}/>}/>
+        </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
