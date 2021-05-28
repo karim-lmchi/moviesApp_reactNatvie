@@ -2,9 +2,20 @@ import React from 'react';
 import { View, Button, TextInput, StyleSheet, FlatList,Text } from 'react-native';
 import films from '../Helpers/filmsData';
 import FilmItem from './FilmItem';
+import { getFilmsFromApiWithSearchedText } from '../API/theMovieDataBaseApi';
 
-export default function Search() {
-        return(
+class Search extends React.Component {
+
+    constructor(props) {
+        super(props)
+    }
+
+    _loadFilms() {
+        getFilmsFromApiWithSearchedText('star').then(data => console.log(data));
+    };
+
+        render() {
+            return(
             <View style={ styles.main_container }>
                 <TextInput placeholder="Film title"
                             style={ styles.textinput }/>
@@ -14,7 +25,8 @@ export default function Search() {
                           keyExtractor={(item) => item.id.toString()}
                           renderItem={({item}) => <FilmItem film={item}/>}/>
             </View>
-        )
+            )
+        }
 }
 
 const styles = StyleSheet.create({
@@ -31,3 +43,5 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     }
 })
+
+export default Search;
