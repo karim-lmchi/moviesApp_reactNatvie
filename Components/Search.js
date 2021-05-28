@@ -12,7 +12,7 @@ export default function Search() {
                         style={{ height: 50 }}/>
                 <FlatList data={ films }
                           keyExtractor={(item) => item.id.toString()}
-                          renderItem={({item}) => <FilmItem/>}/>
+                          renderItem={({item}) => <FilmItem film={item}/>}/>
             </View>
         )
 }
