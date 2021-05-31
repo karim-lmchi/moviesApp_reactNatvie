@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button, TextInput, StyleSheet, FlatList,Text } from 'react-native';
+import { View, Button, TextInput, StyleSheet, FlatList,Text, ActivityIndicator } from 'react-native';
 import FilmItem from './FilmItem';
 import { getFilmsFromApiWithSearchedText } from '../API/theMovieDataBaseApi';
 
@@ -9,13 +9,27 @@ class Search extends React.Component {
         super(props)
         this.state = { 
             films: [],
+            isLoading: false,
         }
         this.searchedText = ''
     }
 
     _loadFilms() {
+        this.setState({ isLoading: true });
         if(this.searchedText.length > 0) {
-            getFilmsFromApiWithSearchedText(this.searchedText).then(data => this.setState({ films: data.results }));
+            getFilmsFromApiWithSearchedText(this.searchedText)
+                .then(data => this.setState({ films: data.results, isLoading: false }));
+        }
+    }
+
+    _displayLoading() {
+        if(this.state.isLoading) {
+            return(
+                <View style={styles.loading_container}>
+                     {/* ActivityIndicator is a reactNative component (see documentation) */}
+                    <ActivityIndicator size='large'/>
+                </View>
+            )
         }
     }
 
@@ -24,6 +38,7 @@ class Search extends React.Component {
     }
 
     render() {
+        console.log(this.state.isLoading);
         return(
         <View style={ styles.main_container }>
             <TextInput placeholder="Film title"
@@ -38,6 +53,7 @@ class Search extends React.Component {
             <FlatList data={ this.state.films }
                       keyExtractor={(item) => item.id.toString()}
                       renderItem={({item}) => <FilmItem film={item}/>}/>
+            {this._displayLoading()}
         </View>
         )
     }
@@ -55,6 +71,16 @@ const styles = StyleSheet.create({
         borderColor: '#000000',
         borderWidth: 1,
         paddingLeft: 5,
+    },
+
+    loading_container: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 100,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 })
 
