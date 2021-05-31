@@ -36,11 +36,23 @@ class Search extends React.Component {
         if(this.state.isLoading) {
             return(
                 <View style={styles.loading_container}>
-                     {/* ActivityIndicator is a reactNative component (see documentation) */}
+                     {/* ActivityIndicator is a reactNative component to display a loading icon (see documentation) */}
                     <ActivityIndicator size='large'/>
                 </View>
             )
         }
+    }
+
+    // when you do a new search, you reset everything to 0 so as not to accumulate the display of different searches
+    _searchFilms() {
+        this.page = 0
+        this.totalPages = 0
+        // setState is asynchronous
+        this.setState({
+            films: [],
+        }, () => {
+            this._loadFilms()
+        })
     }
 
     _searchTextInputChanged(text) {
@@ -55,9 +67,9 @@ class Search extends React.Component {
                        onChangeText={(text) => this._searchTextInputChanged(text)}
                        // allows, once the button enter is clicked, to load the films list
                        // now, it's not mandatory to click on search button to have the films list
-                       onSubmitEditing={() => this._loadFilms()}/>
+                       onSubmitEditing={() => this._searchFilms()}/>
             <Button title="Search" 
-                    onPress={() => this._loadFilms()}
+                    onPress={() => this._searchFilms()}
                     style={{ height: 50 }}/>
             <FlatList data={ this.state.films }
                       keyExtractor={(item) => item.id.toString()}
