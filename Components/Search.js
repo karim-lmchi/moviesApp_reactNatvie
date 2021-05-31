@@ -28,7 +28,10 @@ class Search extends React.Component {
         <View style={ styles.main_container }>
             <TextInput placeholder="Film title"
                        style={ styles.textinput }
-                       onChangeText={(text) => this._searchTextInputChanged(text)}/>
+                       onChangeText={(text) => this._searchTextInputChanged(text)}
+                       // allows, once the button enter is clicked, to load the films list
+                       // now, it's not mandatory to click on search button to have the films list
+                       onSubmitEditing={() => this._loadFilms()}/>
             <Button title="Search" 
                     onPress={() => this._loadFilms()}
                     style={{ height: 50 }}/>
