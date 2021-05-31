@@ -7,18 +7,28 @@ class Search extends React.Component {
 
     constructor(props) {
         super(props)
+        this.searchedText = '';
+        this.page = 0;
+        this.totalPages = 0;
         this.state = { 
             films: [],
             isLoading: false,
         }
-        this.searchedText = ''
     }
 
     _loadFilms() {
         this.setState({ isLoading: true });
         if(this.searchedText.length > 0) {
-            getFilmsFromApiWithSearchedText(this.searchedText)
-                .then(data => this.setState({ films: data.results, isLoading: false }));
+            getFilmsFromApiWithSearchedText(this.searchedText, this.page + 1)
+                .then(data => {
+                    this.page = data.page
+                    this.totalPages = data.total_pages
+                    this.setState({ 
+                        // We concatenate so as not to overwrite the films already present in the table when loading the other films
+                        films: [...this.state.films, ...data.results], 
+                        isLoading: false 
+                    })
+                });
         }
     }
 
@@ -51,7 +61,16 @@ class Search extends React.Component {
                     style={{ height: 50 }}/>
             <FlatList data={ this.state.films }
                       keyExtractor={(item) => item.id.toString()}
-                      renderItem={({item}) => <FilmItem film={item}/>}/>
+                      renderItem={({item}) => <FilmItem film={item}/>}
+                      // onEndReachedThreshold called when the scroll position is at the half of the page
+                      // by default, its value is 1 for all of the page
+                      onEndReachedThreshold={0.5}
+                      // onEndReached called when we are at the half of the page
+                      onEndReached={() => {
+                          if(this.page < this.totalPages) {
+                              this._loadFilms()
+                          }
+                      }}/>
             {this._displayLoading()}
         </View>
         )
